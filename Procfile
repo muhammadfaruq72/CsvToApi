@@ -1,1 +1,1 @@
-web: gunicorn -w 4 uvicorn.workers.Uvicornworker FastApi_GET:app
+uvicorn FastApi_GET:app --reload
