@@ -1,1 +1,1 @@
-web: gunicorn -b :5000 --access-logfile - --error-logfile -  FastApi_GET:app
+web: gunicorn -w 4 -k uvicorn.workers.UvicornWorker FastApi_GET:app
