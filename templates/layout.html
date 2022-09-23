@@ -1,0 +1,301 @@
+
+<!DOCTYPE html>
+<html lang="en" class="antialiased">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>CSV ➜ API</title>
+	<meta name="description" content="">
+	<meta name="keywords" content="">
+	<link href="{{ url_for('static', path='templates/favicon.ico') }}" rel="icon">
+	<link href="{{ url_for('static', path='templates/tailwind.min.css') }}" rel="stylesheet">
+	<link href="{{ url_for('static', path='templates/jquery.dataTables.min.css') }}" rel="stylesheet">
+	<link href="{{ url_for('static', path='templates/responsive.dataTables.min.css') }}" rel="stylesheet">
+	<link href="{{ url_for('static', path='templates/style.css') }}" rel="stylesheet">
+	<link href="{{ url_for('static', path='templates/flowbite.min.css') }}" rel="stylesheet">
+	
+
+</head>
+
+	<header class="flex items-center justify-between px-4 py-2 ">
+		<h1 class="flex items-center font-sans font-bold break-normal text-indigo-500  text-xl md:text-2xl">
+			<a class="mx-2" style="margin-left: 1rem !important; color: rgba(29,78,216,var(--tw-bg-opacity)) !important;">CSV ➜ API</a>
+		</h1>
+		<!--Title-->
+
+		
+		<!-- Modal toggle -->
+		<button class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button" data-modal-toggle="defaultModal">
+			📁 Set Directory
+		</button>
+		
+		<!-- Main modal -->
+		<div id="defaultModal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 w-full md:inset-0 h-modal md:h-full">
+			<div class="relative p-4 w-full max-w-2xl h-full md:h-auto">
+				<!-- Modal content -->
+				<div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+					<!-- Modal header -->
+					<div class="flex justify-between items-start p-4 rounded-t border-b dark:border-gray-600">
+						<h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+							Set a Directory
+						</h3>
+						<button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-toggle="defaultModal">
+							<svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+							<span class="sr-only">Close modal</span>
+						</button>
+					</div>
+					<!-- Modal body -->
+					<div class="p-6 space-y-6">
+						<p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+							Set a directory from your computer. Copy the directory address and paste it here. You don't have to do it again until it's necessary!
+						</p>
+						<div class="mb-6">
+							<input type="text" id="large-input" class="block p-4 w-full text-gray-900 bg-gray-50 rounded-lg border border-gray-300 sm:text-md focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+						</div>
+					</div>
+					<!-- Modal footer -->
+					<div class="flex items-center p-6 space-x-2 rounded-b border-t border-gray-200 dark:border-gray-600">
+						<button onclick="adddir()" data-modal-toggle="defaultModal" type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"> Set Directory</button>
+						<button data-modal-toggle="defaultModal" type="button" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">Cancel</button>
+					</div>
+				</div>
+			</div>
+		</div> 
+
+	</header>
+<br>
+<br>
+<body class="bg-gray-100 text-gray-900 tracking-wider leading-normal">
+
+
+	<!--Container-->
+	<div class="container w-full md:w-4/5 xl:w-3/5  mx-auto md:px-2 xl:px-2">
+		
+		
+		
+		
+		<label for="countries" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">Select a CSV file</label>
+		
+		
+		
+		<select name="my_name" id="countries" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" >
+			
+		</select>
+		
+		<br>
+		<button onclick="changeFunc()" id="display" type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">🔘 Select Table</button>
+		<br>
+		<br>
+
+		<!--Card-->
+		<div id='recipients' class="p-8 mt-6 lg:mt-0 rounded shadow bg-white">
+
+
+			<table id="example" class="stripe hover" style="width:100%; padding-top: 1em;  padding-bottom: 1em;">
+			</table>
+			
+
+		</div>
+		<br>
+		<label for="countries" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">Select a column</label>
+		<select name="my_name" id="countries_1" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" >
+			
+		</select>
+		
+		<br>
+		<button id="generate" onclick="GenerateApi()" type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">⚙️ Generate Api</button>
+		<!--/Card-->
+		
+		<br>
+		<br>
+		<div id="alert-additional-content-1" class="mb-4 rounded-lg dark:bg-blue-200" role="alert">
+			<div class="flex items-center">
+				<span class="sr-only">Info</span>
+				<h3 id="title" class="text-lg font-medium text-blue-700 dark:text-blue-800"></h3>
+			</div>
+			<h2 id="changetxt" class="mt-2 text-sm text-blue-700 dark:text-blue-800"></h2>
+			<h2 id="changetxt_1" class="text-sm text-blue-700 dark:text-blue-800"></h2>
+		</div>
+		<br>
+
+
+	</div>
+	<!--/container-->
+
+
+
+
+
+	<script type="text/javascript" src="{{ url_for('static', path='templates/jquery-3.4.1.min.js') }}"></script>
+	<script src="{{ url_for('static', path='templates/jquery.dataTables.min.js') }}"></script>
+	<script src="{{ url_for('static', path='templates/dataTables.responsive.min.js') }}"></script>
+	<script src="{{ url_for('static', path='templates/flowbite.js') }}"></script>
+	<script>
+		
+		document.getElementById("recipients").style.visibility = "hidden"; 
+
+
+		
+		$.ajax({
+			url: '/Select_csv',
+			dataType: 'json',
+			success: function (outputfromserver) {
+
+				
+				console.log(outputfromserver)
+
+				let optionList = document.getElementById('countries').options;
+				
+				outputfromserver.forEach(option =>
+					optionList.add(
+						new Option(option, option)
+					)
+				);
+			}
+		});
+		
+		
+
+		function changeFunc() {
+			
+			document.getElementById("recipients").style.visibility = "visible";
+			var btn = document.getElementById("display");
+
+			
+			if (btn.innerHTML == '🧼 Clear Table') {
+				location.reload();
+			} 
+			
+			
+			var selectBox = document.getElementById("countries");
+			var selectedValue = selectBox.options[selectBox.selectedIndex].text;
+			
+			selectedValue = selectedValue.split('.')[0]
+			console.log(selectedValue);
+			$.ajax({
+				url: '/' + selectedValue, 
+				dataType: 'json', 
+				success: function (outputfromserver) {
+
+
+					console.log(outputfromserver);
+					
+					let optionList = document.getElementById('countries_1').options;
+					xyz = Object.keys(outputfromserver[0])
+					xyz.forEach(option =>
+						optionList.add(
+							new Option(option, option)
+						)
+					);
+					
+										
+					var dataSet = outputfromserver;
+					var my_columns = [];
+					
+					$.each( dataSet[0], function( key, value ) {
+						var my_item = {};
+						my_item.data = key;
+						my_item.title = key;
+						my_columns.push(my_item);
+					});
+					
+					var dataTable = $(document).ready(function() {
+						$('#example').DataTable({
+							responsive: true,
+							retrieve: true,
+							data: dataSet,
+							"columns": my_columns
+						})
+						.columns.adjust()
+						.responsive.recalc();;
+					});
+					
+
+
+				}
+			});
+			
+			
+			var btn = document.getElementById("display");
+			btn.value = '🧼 Clear Table'; 
+			btn.innerHTML = '🧼 Clear Table';
+			
+			
+			
+			
+		}
+		
+		
+		
+		function GenerateApi() {
+			var subjectIdNode_1 = document.getElementById('countries_1');
+			var value_1 = subjectIdNode_1.options[subjectIdNode_1.selectedIndex].text;
+			console.log("The selected value=" + value_1);
+			
+			var subjectIdNode = document.getElementById('countries');
+			var value = subjectIdNode.options[subjectIdNode.selectedIndex].text;
+			value = value.split('.')[0]
+			console.log("The selected value=" + value);
+			
+			
+			console.log(window.location.href + value)
+			console.log(window.location.href + value + '/' + value_1 + '?value=')
+			
+			
+			var btn = document.getElementById("generate");
+			btn.value = '⚙️ Generated'; 
+			btn.innerHTML = '⚙️ Generated';
+			
+			var changetitle = document.getElementById("title");
+			changetitle.textContent = "Successfully Generated Api";
+			var changetxt = document.getElementById("changetxt");
+			changetxt.textContent = window.location.href + value;
+			var changetxt_1 = document.getElementById("changetxt_1");
+			changetxt_1.textContent = window.location.href + value + '/' + value_1 + '?value=';
+			
+			
+			window.scrollTo(0,document.body.scrollHeight);
+			
+		}
+		
+		
+		function adddir() {
+			console.log(document.getElementById('large-input').value);
+			directory = document.getElementById('large-input').value;
+			
+			
+			
+			$.ajax({
+				url: "/directory",
+				type: "post",
+				dataType: "json",
+				contentType: "application/json",
+				data: JSON.stringify({
+					directory: directory
+				})
+			});
+			
+			function wait(ms){
+				var start = new Date().getTime();
+				var end = start;
+				while(end < start + ms) {
+					end = new Date().getTime();
+				}
+			}
+			console.log('before');
+			wait(500);
+			console.log('after');
+			
+			location.reload();
+
+		}
+		
+
+	</script>
+
+</body>
+
+</html>
+
